@@ -1,10 +1,1174 @@
 {% extends "base.html" %}
 
-{% block title %}ShopAPI | Modern E-Commerce API{% endblock %}
+{% block title %}ShopAPI | Modern E-Commerce REST API{% endblock %}
 
 {% block content %}
 
-<h1>ShopAPI</h1>
-<p>Modern E-Commerce REST API</p>
+<!-- =========================================
+     HERO
+========================================= -->
+<header class="hero">
+
+    <div class="container">
+
+        <nav class="navbar">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">🛒</span>
+                <span>Shop<span>API</span></span>
+            </a>
+
+            <div class="nav-steps">
+                <a href="#architecture">Öğren</a>
+                <a href="#database">Uygula</a>
+                <a href="#testing">Test Et</a>
+                <a href="#production">Yayınla</a>
+            </div>
+
+        </nav>
+
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                DJANGO REST FRAMEWORK PROJECT
+            </span>
+
+            <h1>
+                Modern E-Commerce<br>
+                REST API
+            </h1>
+
+            <p>
+                Django REST Framework ile geliştirilmiş;
+                güvenli, ölçeklenebilir ve test edilebilir
+                modern bir e-ticaret backend API projesi.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="#architecture" class="btn btn-primary">
+                    Projeyi Keşfet ↓
+                </a>
+
+                <span class="hero-note">
+                    Gerçek Proje • Gerçek API • Gerçek Deneyim
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+<!-- =========================================
+     01 - GENERAL ARCHITECTURE
+========================================= -->
+<section id="architecture"
+         class="section architecture-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">01</span>
+
+            <div>
+                <h2>Genel Sistem Mimarisi</h2>
+
+                <p>
+                    Client'tan PostgreSQL'e kadar
+                    ShopAPI'nin temel backend veri akışı.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="architecture-grid">
+
+            <div class="architecture-flow">
+
+
+                <!-- CLIENT -->
+                <article class="architecture-card">
+
+                    <div class="card-icon">💻</div>
+
+                    <h3>Client</h3>
+
+                    <span>Web / Mobil / Postman</span>
+
+                    <ul>
+                        <li>HTTP API istekleri</li>
+                        <li>JSON veri gönderimi</li>
+                        <li>JWT token ile authentication</li>
+                        <li>Frontend bağımsız kullanım</li>
+                    </ul>
+
+                </article>
+
+
+                <!-- CONNECTION -->
+                <div class="connection">
+
+                    <span>HTTPS</span>
+
+                    <strong>REST API</strong>
+
+                    <div class="arrow">→</div>
+
+                </div>
+
+
+                <!-- DRF -->
+                <article class="architecture-card featured-card">
+
+                    <div class="card-icon">⚙️</div>
+
+                    <h3>
+                        Django REST<br>
+                        Framework
+                    </h3>
+
+                    <span>Backend API</span>
+
+                    <ul>
+                        <li>URL Router</li>
+                        <li>View / ViewSet</li>
+                        <li>Serializer</li>
+                        <li>Permission</li>
+                        <li>Business Logic</li>
+                    </ul>
+
+                </article>
+
+
+                <!-- CONNECTION -->
+                <div class="connection">
+
+                    <span>ORM</span>
+
+                    <strong>Database</strong>
+
+                    <div class="arrow">→</div>
+
+                </div>
+
+
+                <!-- POSTGRESQL -->
+                <article class="architecture-card">
+
+                    <div class="card-icon">🐘</div>
+
+                    <h3>PostgreSQL</h3>
+
+                    <span>Database</span>
+
+                    <ul>
+                        <li>Relational Database</li>
+                        <li>User Isolation</li>
+                        <li>Persistent Data</li>
+                        <li>Production Ready</li>
+                    </ul>
+
+                </article>
+
+            </div>
+
+
+            <!-- LIVE JSON -->
+            <aside class="json-panel">
+
+                <div class="json-header">
+
+                    <div>
+                        <span class="status-dot"></span>
+                        Live JSON Response
+                    </div>
+
+                    <span class="status-code">
+                        200 OK
+                    </span>
+
+                </div>
+
+
+                <div class="request-line">
+
+                    <span class="method">
+                        GET
+                    </span>
+
+                    <code>/api/products/1/</code>
+
+                </div>
+
+
+                <pre class="json-code"><code>{
+  "id": 1,
+  "name": "Mechanical Keyboard",
+  "price": "199.99",
+  "category": "Electronics",
+  "stock": 25,
+  "is_active": true
+}</code></pre>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     02 - DATABASE SCHEMA
+========================================= -->
+<section id="database"
+         class="section database-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">02</span>
+
+            <div>
+
+                <h2>Veri Modeli</h2>
+
+                <p>
+                    ShopAPI'nin PostgreSQL üzerinde çalışan
+                    ilişkisel database yapısı.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="schema-board">
+
+
+            <!-- USER -->
+            <article class="schema-card">
+
+                <div class="schema-icon">👤</div>
+
+                <div class="schema-title">
+                    <h3>User</h3>
+                    <span>AbstractUser</span>
+                </div>
+
+                <div class="schema-fields">
+
+                    <span>id</span>
+                    <span>username</span>
+                    <span>email</span>
+                    <span>password</span>
+                    <span>is_staff</span>
+
+                </div>
+
+            </article>
+
+
+            <div class="relation-box">
+                <strong>1 : N</strong>
+                <span>User Orders</span>
+                <div>↓</div>
+            </div>
+
+
+            <!-- ORDER -->
+            <article class="schema-card">
+
+                <div class="schema-icon">📦</div>
+
+                <div class="schema-title">
+                    <h3>Order</h3>
+                    <span>Customer Order</span>
+                </div>
+
+                <div class="schema-fields">
+
+                    <span>id</span>
+                    <span>user</span>
+                    <span>status</span>
+                    <span>total_price</span>
+                    <span>created_at</span>
+
+                </div>
+
+            </article>
+
+
+            <div class="relation-box">
+                <strong>1 : N</strong>
+                <span>Order Items</span>
+                <div>↓</div>
+            </div>
+
+
+            <!-- ORDER ITEM -->
+            <article class="schema-card">
+
+                <div class="schema-icon">🧾</div>
+
+                <div class="schema-title">
+                    <h3>OrderItem</h3>
+                    <span>Order Product</span>
+                </div>
+
+                <div class="schema-fields">
+
+                    <span>id</span>
+                    <span>order</span>
+                    <span>product</span>
+                    <span>quantity</span>
+                    <span>unit_price</span>
+
+                </div>
+
+            </article>
+
+
+            <!-- CATEGORY -->
+            <article class="schema-card">
+
+                <div class="schema-icon">🏷️</div>
+
+                <div class="schema-title">
+                    <h3>Category</h3>
+                    <span>Product Group</span>
+                </div>
+
+                <div class="schema-fields">
+
+                    <span>id</span>
+                    <span>name</span>
+                    <span>slug</span>
+                    <span>created_at</span>
+
+                </div>
+
+            </article>
+
+
+            <div class="relation-box horizontal-relation">
+
+                <strong>1 : N</strong>
+
+                <span>Category Products</span>
+
+                <div>→</div>
+
+            </div>
+
+
+            <!-- PRODUCT -->
+            <article class="schema-card product-schema-card">
+
+                <div class="schema-icon">🛍️</div>
+
+                <div class="schema-title">
+                    <h3>Product</h3>
+                    <span>Store Product</span>
+                </div>
+
+                <div class="schema-fields">
+
+                    <span>id</span>
+                    <span>category</span>
+                    <span>name</span>
+                    <span>price</span>
+                    <span>stock</span>
+                    <span>is_active</span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div class="schema-note">
+
+            <strong>Relational Architecture</strong>
+
+            <span>
+                User 1:N Order &nbsp; • &nbsp;
+                Order 1:N OrderItem &nbsp; • &nbsp;
+                Category 1:N Product
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     03 - API ENDPOINTS
+========================================= -->
+<section id="endpoints"
+         class="section endpoints-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">03</span>
+
+            <div>
+
+                <h2>API Endpoints</h2>
+
+                <p>
+                    Authentication, product, category ve
+                    order işlemleri REST endpoint'leri üzerinden yönetilir.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="endpoint-grid">
+
+
+            <!-- AUTH -->
+            <article class="endpoint-card">
+
+                <div class="endpoint-card-header">
+
+                    <span class="endpoint-icon">🔐</span>
+
+                    <div>
+                        <h3>Authentication</h3>
+                        <p>JWT Authentication</p>
+                    </div>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method post">
+                        POST
+                    </span>
+
+                    <code>/api/auth/register/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method post">
+                        POST
+                    </span>
+
+                    <code>/api/auth/login/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method post">
+                        POST
+                    </span>
+
+                    <code>/api/auth/refresh/</code>
+
+                </div>
+
+            </article>
+
+
+            <!-- CATEGORY -->
+            <article class="endpoint-card">
+
+                <div class="endpoint-card-header">
+
+                    <span class="endpoint-icon">🏷️</span>
+
+                    <div>
+                        <h3>Categories</h3>
+                        <p>Category Management</p>
+                    </div>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method get">
+                        GET
+                    </span>
+
+                    <code>/api/categories/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method post">
+                        POST
+                    </span>
+
+                    <code>/api/categories/</code>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCTS -->
+            <article class="endpoint-card">
+
+                <div class="endpoint-card-header">
+
+                    <span class="endpoint-icon">🛍️</span>
+
+                    <div>
+                        <h3>Products</h3>
+                        <p>Product CRUD</p>
+                    </div>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method get">
+                        GET
+                    </span>
+
+                    <code>/api/products/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method post">
+                        POST
+                    </span>
+
+                    <code>/api/products/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method get">
+                        GET
+                    </span>
+
+                    <code>/api/products/{id}/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method patch">
+                        PATCH
+                    </span>
+
+                    <code>/api/products/{id}/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method delete">
+                        DELETE
+                    </span>
+
+                    <code>/api/products/{id}/</code>
+
+                </div>
+
+            </article>
+
+
+            <!-- ORDERS -->
+            <article class="endpoint-card">
+
+                <div class="endpoint-card-header">
+
+                    <span class="endpoint-icon">📦</span>
+
+                    <div>
+                        <h3>Orders</h3>
+                        <p>Order Management</p>
+                    </div>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method get">
+                        GET
+                    </span>
+
+                    <code>/api/orders/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method post">
+                        POST
+                    </span>
+
+                    <code>/api/orders/</code>
+
+                </div>
+
+
+                <div class="endpoint-row">
+
+                    <span class="http-method get">
+                        GET
+                    </span>
+
+                    <code>/api/orders/{id}/</code>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     04 - ROLES & PERMISSIONS
+========================================= -->
+<section id="permissions"
+         class="section permissions-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">04</span>
+
+            <div>
+
+                <h2>Roller & Permissions</h2>
+
+                <p>
+                    Authentication tek başına yeterli değildir.
+                    Kullanıcıların hangi kaynaklara erişebileceği
+                    permission katmanında kontrol edilir.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="role-grid">
+
+
+            <!-- NORMAL USER -->
+            <article class="role-card">
+
+                <div class="role-top">
+
+                    <span class="role-icon">👤</span>
+
+                    <div>
+                        <span class="role-label">
+                            NORMAL USER
+                        </span>
+
+                        <h3>Kullanıcı</h3>
+                    </div>
+
+                </div>
+
+
+                <ul class="permission-list">
+
+                    <li>
+                        <span>✓</span>
+                        Ürünleri görüntüleyebilir
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Kategorileri görüntüleyebilir
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Sipariş oluşturabilir
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Kendi siparişlerini görüntüleyebilir
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        JWT ile korunan endpoint'lere erişebilir
+                    </li>
+
+                    <li class="permission-denied">
+                        <span>×</span>
+                        Başka kullanıcının siparişine erişemez
+                    </li>
+
+                </ul>
+
+
+                <div class="security-tag">
+                    🔒 Ownership / User Isolation
+                </div>
+
+            </article>
+
+
+            <!-- ADMIN -->
+            <article class="role-card admin-role">
+
+                <div class="role-top">
+
+                    <span class="role-icon">🛡️</span>
+
+                    <div>
+
+                        <span class="role-label">
+                            STAFF USER
+                        </span>
+
+                        <h3>Admin</h3>
+
+                    </div>
+
+                </div>
+
+
+                <ul class="permission-list">
+
+                    <li>
+                        <span>✓</span>
+                        Product CRUD işlemleri
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Category yönetimi
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Sipariş yönetimi
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Yönetim endpoint'lerine erişim
+                    </li>
+
+                    <li>
+                        <span>✓</span>
+                        Staff permission kontrolleri
+                    </li>
+
+                </ul>
+
+
+                <div class="security-tag">
+                    🛡️ Role Based Permission
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     05 - TECHNOLOGIES
+========================================= -->
+<section id="technologies"
+         class="section technologies-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">05</span>
+
+            <div>
+
+                <h2>Teknolojiler</h2>
+
+                <p>
+                    ShopAPI'nin development ve production
+                    altyapısında kullanılan temel teknolojiler.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="technology-grid">
+
+
+            <article class="technology-card">
+
+                <span class="technology-icon">🐍</span>
+
+                <h3>Python</h3>
+
+                <strong>3.12.10</strong>
+
+                <p>
+                    Backend programlama dili
+                </p>
+
+            </article>
+
+
+            <article class="technology-card">
+
+                <span class="technology-icon">🌿</span>
+
+                <h3>Django</h3>
+
+                <strong>5.2.17</strong>
+
+                <p>
+                    Web framework
+                </p>
+
+            </article>
+
+
+            <article class="technology-card">
+
+                <span class="technology-icon">⚙️</span>
+
+                <h3>DRF</h3>
+
+                <strong>3.18.1</strong>
+
+                <p>
+                    REST API framework
+                </p>
+
+            </article>
+
+
+            <article class="technology-card">
+
+                <span class="technology-icon">🐘</span>
+
+                <h3>PostgreSQL</h3>
+
+                <strong>17.11</strong>
+
+                <p>
+                    Relational database
+                </p>
+
+            </article>
+
+
+            <article class="technology-card">
+
+                <span class="technology-icon">🔑</span>
+
+                <h3>JWT</h3>
+
+                <strong>SimpleJWT</strong>
+
+                <p>
+                    Token authentication
+                </p>
+
+            </article>
+
+
+            <article class="technology-card">
+
+                <span class="technology-icon">📘</span>
+
+                <h3>OpenAPI</h3>
+
+                <strong>Swagger</strong>
+
+                <p>
+                    Interactive API documentation
+                </p>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     06 - TEST & PRODUCTION
+========================================= -->
+<section id="testing"
+         class="section production-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">06</span>
+
+            <div>
+
+                <h2>Test & Production</h2>
+
+                <p>
+                    Bir API yalnızca çalışmasıyla değil;
+                    test, güvenlik ve deployment süreçleriyle tamamlanır.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="production-grid">
+
+
+            <!-- DEVELOPMENT -->
+            <article class="production-card">
+
+                <span class="production-step">
+                    DEVELOPMENT
+                </span>
+
+                <h3>API Development</h3>
+
+                <ul>
+
+                    <li>REST API</li>
+                    <li>Serializer Validation</li>
+                    <li>Filtering</li>
+                    <li>Search</li>
+                    <li>Ordering</li>
+                    <li>Pagination</li>
+
+                </ul>
+
+            </article>
+
+
+            <!-- SECURITY -->
+            <article class="production-card">
+
+                <span class="production-step">
+                    SECURITY
+                </span>
+
+                <h3>Authentication & Permissions</h3>
+
+                <ul>
+
+                    <li>JWT Authentication</li>
+                    <li>Permissions</li>
+                    <li>User Isolation</li>
+                    <li>Ownership Control</li>
+                    <li>Protected Endpoints</li>
+
+                </ul>
+
+            </article>
+
+
+            <!-- TEST -->
+            <article class="production-card">
+
+                <span class="production-step">
+                    TEST
+                </span>
+
+                <h3>Testing</h3>
+
+                <ul>
+
+                    <li>Postman</li>
+                    <li>Swagger UI</li>
+                    <li>Automated Tests</li>
+                    <li>Negative Test Cases</li>
+                    <li>Regression Tests</li>
+
+                </ul>
+
+            </article>
+
+
+            <!-- PRODUCTION -->
+            <article id="production"
+                     class="production-card production-final">
+
+                <span class="production-step">
+                    PRODUCTION
+                </span>
+
+                <h3>Deployment</h3>
+
+                <ul>
+
+                    <li>Ubuntu VPS</li>
+                    <li>Gunicorn</li>
+                    <li>Nginx</li>
+                    <li>Domain & DNS</li>
+                    <li>SSL / TLS</li>
+                    <li>HTTPS</li>
+                    <li>HSTS</li>
+
+                </ul>
+
+            </article>
+
+        </div>
+
+
+        <div class="deployment-flow">
+
+            <span>DOMAIN / DNS</span>
+
+            <b>→</b>
+
+            <span>HTTPS</span>
+
+            <b>→</b>
+
+            <span>NGINX</span>
+
+            <b>→</b>
+
+            <span>GUNICORN</span>
+
+            <b>→</b>
+
+            <span>DJANGO + DRF</span>
+
+            <b>→</b>
+
+            <span>POSTGRESQL</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="footer-main">
+
+
+            <div class="footer-brand">
+
+                <a href="/" class="brand">
+                    <span class="brand-icon">🛒</span>
+                    <span>Shop<span>API</span></span>
+                </a>
+
+                <p>
+                    Production-oriented Django REST Framework
+                    e-commerce backend project.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <!-- Backend tamamlandığında gerçek URL -->
+                <a href="#">
+                    API Docs
+                </a>
+
+                <!-- GitHub URL daha sonra bağlanacak -->
+                <a href="#">
+                    GitHub
+                </a>
+
+                <!-- Portfolio URL daha sonra bağlanacak -->
+                <a href="#">
+                    Portfolio
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                All Systems Operational
+
+            </div>
+
+            <span>
+                ShopAPI • Django REST Framework
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
 
 {% endblock %}
