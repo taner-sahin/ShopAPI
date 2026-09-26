@@ -8,10 +8,12 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = (
             "id",
+            "order",
             "product",
             "quantity",
             "price",
         )
+        read_only_fields = ("order",)
 
 
 class OrderSerializer(serializers.ModelSerializer):
