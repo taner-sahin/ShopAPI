@@ -7,6 +7,7 @@ from .serializers import OrderItemSerializer, OrderSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
@@ -20,12 +21,14 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 class OrderItemViewSet(viewsets.ModelViewSet):
+    queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return OrderItem.objects.filter(order__user=self.request.user).select_related(
-            "order", "product"
+            "order",
+            "product",
         )
 
     def perform_create(self, serializer):
