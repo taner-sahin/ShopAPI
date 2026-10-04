@@ -1,8 +1,15 @@
 # ShopAPI
 
-ShopAPI is a backend-focused e-commerce REST API built with Django REST Framework and PostgreSQL.
+**Production-ready E-Commerce REST API built with Django REST Framework and PostgreSQL.**
 
-The project demonstrates the architecture of a modern REST API, including relational data modeling, serialization, CRUD operations, JWT authentication, role-based permissions, ownership protection, automated testing, OpenAPI documentation, and production-oriented architecture.
+ShopAPI is a backend-focused e-commerce REST API demonstrating the complete lifecycle of a modern Django REST Framework application — from relational data modeling and CRUD operations to JWT authentication, authorization, ownership protection, automated testing, OpenAPI documentation, and production deployment.
+
+The application is deployed on an Ubuntu VPS using **Gunicorn, Nginx, PostgreSQL, HTTPS, SSL/TLS, and HSTS**.
+
+**Live Application:** https://shopapi.tanersahindev.com  
+**Swagger Documentation:** https://shopapi.tanersahindev.com/api/docs/  
+**OpenAPI Schema:** https://shopapi.tanersahindev.com/api/schema/  
+**GitHub Repository:** https://github.com/taner-sahin/ShopAPI
 
 ![ShopAPI Home Page](screenshots/shopapi-home.png)
 
@@ -10,26 +17,34 @@ The project demonstrates the architecture of a modern REST API, including relati
 
 ## Key Highlights
 
-- Django REST Framework architecture
+- Production-deployed Django REST Framework API
 - PostgreSQL database
-- RESTful API design
-- JSON request and response flow
-- Product and category management
+- RESTful API architecture
+- Product and category CRUD
 - Order and order item management
 - Custom user model
 - JWT authentication
 - Access and refresh tokens
 - Authentication and authorization
-- Role-based product permissions
+- Role-based permissions
+- Staff-only product write operations
 - User-specific order ownership
 - Ownership-protected API operations
 - OpenAPI schema
 - Interactive Swagger UI
 - JWT authorization through Swagger
-- 26 automated tests passing
-- Environment-based configuration
-- Modular Django application structure
-- Production-oriented architecture
+- **26 automated tests passing**
+- Django production security configuration
+- Environment-based secrets and configuration
+- Modular Django application architecture
+- Gunicorn application server
+- Nginx reverse proxy
+- Ubuntu VPS deployment
+- Domain and DNS configuration
+- SSL/TLS certificate
+- HTTPS
+- HSTS
+- Production deployment checks passing with **0 issues**
 
 ---
 
@@ -41,31 +56,33 @@ ShopAPI follows a layered Django REST Framework architecture.
 
 The main request flow can be summarized as:
 
-    API Client / Frontend / Postman
-                │
-                ▼
-           REST Endpoint
-                │
-                ▼
-        JWT Authentication
-                │
-                ▼
-           Permissions
-                │
-                ▼
-             ViewSet
-                │
-                ▼
-           Serializer
-                │
-                ▼
-           Django ORM
-                │
-                ▼
-           PostgreSQL
-                │
-                ▼
-          JSON Response
+```text
+API Client / Frontend / Postman
+            │
+            ▼
+       REST Endpoint
+            │
+            ▼
+     JWT Authentication
+            │
+            ▼
+       Permissions
+            │
+            ▼
+         ViewSet
+            │
+            ▼
+       Serializer
+            │
+            ▼
+       Django ORM
+            │
+            ▼
+       PostgreSQL
+            │
+            ▼
+       JSON Response
+```
 
 Each layer has a separate responsibility:
 
@@ -75,6 +92,7 @@ Each layer has a separate responsibility:
 - **Router** generates REST API routes for ViewSets.
 - **JWT Authentication** identifies authenticated users.
 - **Permissions** determine what authenticated users are allowed to do.
+- **Ownership** restricts protected records to their owners.
 - **Django ORM** communicates with PostgreSQL.
 - **PostgreSQL** stores persistent application data.
 
@@ -103,25 +121,29 @@ Public users can read product data, while product creation, modification, and de
 
 ### Product Endpoints
 
-    GET    /api/products/
-    POST   /api/products/
+```text
+GET    /api/products/
+POST   /api/products/
 
-    GET    /api/products/<id>/
-    PUT    /api/products/<id>/
-    PATCH  /api/products/<id>/
-    DELETE /api/products/<id>/
+GET    /api/products/<id>/
+PUT    /api/products/<id>/
+PATCH  /api/products/<id>/
+DELETE /api/products/<id>/
+```
 
 ![ShopAPI Product Endpoints](screenshots/products-swagger-endpoints.png)
 
 ### Category Endpoints
 
-    GET    /api/categories/
-    POST   /api/categories/
+```text
+GET    /api/categories/
+POST   /api/categories/
 
-    GET    /api/categories/<id>/
-    PUT    /api/categories/<id>/
-    PATCH  /api/categories/<id>/
-    DELETE /api/categories/<id>/
+GET    /api/categories/<id>/
+PUT    /api/categories/<id>/
+PATCH  /api/categories/<id>/
+DELETE /api/categories/<id>/
+```
 
 ---
 
@@ -141,41 +163,45 @@ Authentication functionality includes:
 
 ### User Endpoints
 
-    POST /api/users/register/
-    POST /api/users/token/
-    POST /api/users/token/refresh/
-    GET  /api/users/profile/
+```text
+POST /api/users/register/
+POST /api/users/token/
+POST /api/users/token/refresh/
+GET  /api/users/profile/
+```
 
 ![ShopAPI User and JWT Endpoints](screenshots/users-jwt-endpoints.png)
 
 ### JWT Authentication Flow
 
-    User
-     │
-     ▼
-    Login Request
-     │
-     ▼
-    Username + Password
-     │
-     ▼
-    JWT Token Endpoint
-     │
-     ├── Access Token
-     │
-     └── Refresh Token
-            │
-            ▼
-    Authorization: Bearer <access_token>
-            │
-            ▼
-    JWTAuthentication
-            │
-            ▼
-    request.user
-            │
-            ▼
-    Protected API Endpoint
+```text
+User
+ │
+ ▼
+Login Request
+ │
+ ▼
+Username + Password
+ │
+ ▼
+JWT Token Endpoint
+ │
+ ├── Access Token
+ │
+ └── Refresh Token
+        │
+        ▼
+Authorization: Bearer <access_token>
+        │
+        ▼
+JWTAuthentication
+        │
+        ▼
+request.user
+        │
+        ▼
+Protected API Endpoint
+```
 
 The access token authenticates API requests.
 
@@ -191,24 +217,28 @@ Swagger UI is integrated with JWT authentication.
 
 The Swagger authentication flow is:
 
-    Login
-      │
-      ▼
-    Receive Access Token
-      │
-      ▼
-    Swagger Authorize
-      │
-      ▼
-    JWT Bearer Authentication
-      │
-      ▼
-    Protected Endpoint
-      │
-      ▼
-    Authenticated Response
+```text
+Login
+  │
+  ▼
+Receive Access Token
+  │
+  ▼
+Swagger Authorize
+  │
+  ▼
+JWT Bearer Authentication
+  │
+  ▼
+Protected Endpoint
+  │
+  ▼
+Authenticated Response
+```
 
 This allows protected API functionality to be tested directly through the interactive API documentation.
+
+**Live Swagger UI:** https://shopapi.tanersahindev.com/api/docs/
 
 ---
 
@@ -252,9 +282,11 @@ Security rules are enforced by the backend rather than relying on frontend restr
 
 Public users can perform safe product read operations:
 
-    GET
-    HEAD
-    OPTIONS
+```text
+GET
+HEAD
+OPTIONS
+```
 
 ### Authenticated Normal Users
 
@@ -262,7 +294,9 @@ Normal authenticated users can read products but cannot create, modify, or delet
 
 Restricted product write operations return:
 
-    403 Forbidden
+```text
+403 Forbidden
+```
 
 Authenticated users can work with their own protected order data.
 
@@ -270,10 +304,12 @@ Authenticated users can work with their own protected order data.
 
 Staff users can perform product management operations including:
 
-    POST
-    PUT
-    PATCH
-    DELETE
+```text
+POST
+PUT
+PATCH
+DELETE
+```
 
 This creates a clear separation between public API access, authenticated user operations, and administrative functionality.
 
@@ -297,11 +333,13 @@ Orders contain:
 
 Supported statuses:
 
-    pending
-    processing
-    shipped
-    delivered
-    cancelled
+```text
+pending
+processing
+shipped
+delivered
+cancelled
+```
 
 ### OrderItem
 
@@ -316,36 +354,42 @@ Each order item contains:
 
 The relationship can be summarized as:
 
-    User
-     │
-     ▼
-    Order
-     │
-     ▼
-    OrderItem
-     │
-     ▼
-    Product
+```text
+User
+ │
+ ▼
+Order
+ │
+ ▼
+OrderItem
+ │
+ ▼
+Product
+```
 
 ### Order API Endpoints
 
-    GET    /api/orders/orders/
-    POST   /api/orders/orders/
+```text
+GET    /api/orders/orders/
+POST   /api/orders/orders/
 
-    GET    /api/orders/orders/<id>/
-    PUT    /api/orders/orders/<id>/
-    PATCH  /api/orders/orders/<id>/
-    DELETE /api/orders/orders/<id>/
+GET    /api/orders/orders/<id>/
+PUT    /api/orders/orders/<id>/
+PATCH  /api/orders/orders/<id>/
+DELETE /api/orders/orders/<id>/
+```
 
 ### Order Item Endpoints
 
-    GET    /api/orders/order-items/
-    POST   /api/orders/order-items/
+```text
+GET    /api/orders/order-items/
+POST   /api/orders/order-items/
 
-    GET    /api/orders/order-items/<id>/
-    PUT    /api/orders/order-items/<id>/
-    PATCH  /api/orders/order-items/<id>/
-    DELETE /api/orders/order-items/<id>/
+GET    /api/orders/order-items/<id>/
+PUT    /api/orders/order-items/<id>/
+PATCH  /api/orders/order-items/<id>/
+DELETE /api/orders/order-items/<id>/
+```
 
 ![ShopAPI Order Endpoints](screenshots/orders-swagger-endpoints.png)
 
@@ -363,7 +407,9 @@ Order querysets are restricted using the authenticated user.
 
 Conceptually:
 
-    Order.objects.filter(user=request.user)
+```python
+Order.objects.filter(user=request.user)
+```
 
 Order items follow the same ownership principle through their related order.
 
@@ -381,13 +427,19 @@ ShopAPI includes automatically generated OpenAPI documentation using `drf-specta
 
 ### OpenAPI Schema
 
-    /api/schema/
+```text
+/api/schema/
+```
 
 The OpenAPI schema provides a machine-readable description of the API, including endpoints, request structures, response structures, and authentication requirements.
 
+**Live OpenAPI Schema:** https://shopapi.tanersahindev.com/api/schema/
+
 ### Swagger UI
 
-    /api/docs/
+```text
+/api/docs/
+```
 
 Swagger UI provides an interactive browser interface for exploring and testing ShopAPI.
 
@@ -401,6 +453,8 @@ Developers can:
 - Authenticate using JWT
 - Test protected endpoints
 
+**Live Swagger Documentation:** https://shopapi.tanersahindev.com/api/docs/
+
 ---
 
 ## Automated Testing
@@ -409,7 +463,9 @@ ShopAPI includes automated API tests covering application behavior and security 
 
 ### Current Test Status
 
-    26 tests passed successfully.
+```text
+26 tests passed successfully.
+```
 
 ![ShopAPI Automated Tests](screenshots/automated-tests.png)
 
@@ -438,7 +494,9 @@ The test suite covers functionality including:
 
 Run the complete test suite with:
 
-    python manage.py test
+```bash
+python manage.py test
+```
 
 A passing regression suite helps ensure that existing API behavior and security rules continue working as the project evolves.
 
@@ -472,6 +530,18 @@ A passing regression suite helps ensure that existing API behavior and security 
 - Swagger UI
 - drf-spectacular 0.30.0
 
+### Production
+
+- Ubuntu Linux
+- Gunicorn 26.2.0
+- Nginx
+- systemd
+- VPS
+- Domain / DNS
+- SSL/TLS
+- HTTPS
+- HSTS
+
 ### Configuration and Database Connectivity
 
 - python-dotenv
@@ -499,23 +569,25 @@ A passing regression suite helps ensure that existing API behavior and security 
 
 ShopAPI follows a modular Django application architecture.
 
-    ShopAPI/
-    │
-    ├── config/              # Django project configuration
-    ├── core/                # Homepage and core functionality
-    ├── users/               # Custom user and JWT authentication
-    ├── products/            # Categories, products and permissions
-    ├── orders/              # Orders, order items and ownership
-    │
-    ├── templates/           # Project templates
-    ├── static/              # CSS and static assets
-    ├── screenshots/         # Project screenshots
-    │
-    ├── manage.py
-    ├── requirements.txt
-    ├── .env.example
-    ├── .gitignore
-    └── README.md
+```text
+ShopAPI/
+│
+├── config/              # Django project configuration
+├── core/                # Homepage and core functionality
+├── users/               # Custom user and JWT authentication
+├── products/            # Categories, products and permissions
+├── orders/              # Orders, order items and ownership
+│
+├── templates/           # Project templates
+├── static/              # CSS and static assets
+├── screenshots/         # Project screenshots
+│
+├── manage.py
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── README.md
+```
 
 Each Django application is responsible for a specific part of the system, keeping the project modular, maintainable, and easier to test.
 
@@ -525,24 +597,34 @@ Each Django application is responsible for a specific part of the system, keepin
 
 ### 1. Clone the Repository
 
-    git clone https://github.com/taner-sahin/ShopAPI.git
-    cd ShopAPI
+```bash
+git clone https://github.com/taner-sahin/ShopAPI.git
+cd ShopAPI
+```
 
 ### 2. Create a Virtual Environment
 
-    python -m venv venv
+```bash
+python -m venv venv
+```
 
 Windows:
 
-    venv\Scripts\activate
+```bash
+venv\Scripts\activate
+```
 
 Linux:
 
-    source venv/bin/activate
+```bash
+source venv/bin/activate
+```
 
 ### 3. Install Dependencies
 
-    pip install -r requirements.txt
+```bash
+pip install -r requirements.txt
+```
 
 ### 4. Configure Environment Variables
 
@@ -552,10 +634,12 @@ Sensitive configuration such as the Django secret key and PostgreSQL credentials
 
 Example:
 
-    SECRET_KEY=your-secret-key
-    DEBUG=True
-    ALLOWED_HOSTS=127.0.0.1,localhost
-    DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
+```env
+SECRET_KEY=your-secret-key
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
+```
 
 Use your own PostgreSQL credentials.
 
@@ -567,19 +651,23 @@ Create a PostgreSQL database and database user, then configure the connection th
 
 ### 6. Apply Database Migrations
 
-    python manage.py migrate
+```bash
+python manage.py migrate
+```
 
 ### 7. Run the Development Server
 
-    python manage.py runserver
+```bash
+python manage.py runserver
+```
 
 Local application:
 
-    http://127.0.0.1:8000/
+http://127.0.0.1:8000/
 
 Local Swagger documentation:
 
-    http://127.0.0.1:8000/api/docs/
+http://127.0.0.1:8000/api/docs/
 
 ---
 
@@ -598,6 +686,8 @@ The real `.env` file remains private and is excluded from version control.
 
 The repository provides `.env.example` as a configuration template.
 
+Production security settings are enabled when the application runs with `DEBUG=False`.
+
 ---
 
 ## Security Design
@@ -615,8 +705,14 @@ Important security principles include:
 - Order item ownership protection
 - Environment-based secrets
 - PostgreSQL credentials excluded from version control
+- Secure session cookies in production
+- Secure CSRF cookies in production
+- HTTPS enforcement
+- HSTS
+- Reverse-proxy HTTPS awareness
 - Automated permission tests
 - Automated ownership tests
+- Django production deployment checks
 
 The frontend is never relied upon to enforce API authorization or ownership.
 
@@ -624,7 +720,7 @@ The frontend is never relied upon to enforce API authorization or ownership.
 
 ## Test and Production Architecture
 
-ShopAPI is designed around the complete API lifecycle: development, security, testing, documentation, and production deployment.
+ShopAPI covers the complete API lifecycle: development, security, testing, documentation, and production deployment.
 
 ![ShopAPI Test and Production Architecture](screenshots/test-production.png)
 
@@ -632,68 +728,112 @@ ShopAPI is designed around the complete API lifecycle: development, security, te
 
 ## Production Deployment
 
-Production deployment is the next project stage.
+ShopAPI is deployed to a production Ubuntu VPS.
 
-The planned production request flow is:
+### Production Request Flow
 
-    API Client
-        │
-        ▼
-    Domain / DNS
-        │
-        ▼
-    HTTPS / SSL/TLS
-        │
-        ▼
-    Nginx
-        │
-        ▼
-    Gunicorn
-        │
-        ▼
-    Django REST Framework
-        │
-        ▼
-    PostgreSQL
+```text
+API Client
+    │
+    ▼
+Domain / DNS
+    │
+    ▼
+HTTPS / SSL/TLS
+    │
+    ▼
+Nginx
+    │
+    ▼
+Gunicorn
+    │
+    ▼
+Django REST Framework
+    │
+    ▼
+PostgreSQL
+```
 
-The deployment stage will include:
+### Production Infrastructure
+
+The deployment includes:
 
 - VPS
 - Ubuntu Linux
 - PostgreSQL
 - Gunicorn
-- Nginx
-- systemd
-- Domain and DNS configuration
-- SSL/TLS
+- systemd service management
+- Nginx reverse proxy
+- Custom domain
+- DNS configuration
+- SSL/TLS certificate
 - HTTPS
 - HSTS
-- Production security configuration
+- Environment-based production configuration
+- Django production security settings
 - Production API verification
 
-This section will be updated with the real production configuration and live URLs after deployment is completed.
+Nginx receives public HTTP/HTTPS requests and forwards application traffic to Gunicorn.
+
+Gunicorn runs the Django WSGI application in production.
+
+PostgreSQL provides persistent relational data storage.
+
+SSL/TLS secures network communication over HTTPS.
+
+HSTS instructs compatible browsers to use HTTPS for the application.
+
+Django is configured to recognize the original HTTPS protocol forwarded through the Nginx reverse proxy.
+
+### Production Verification
+
+The production application has been verified through:
+
+```text
+Automated Tests             26 / 26 Passing
+Django Deployment Check     0 Issues
+Gunicorn Service            Active / Running
+Nginx                       Active
+HTTPS                       Enabled
+SSL/TLS                     Enabled
+HSTS                        Enabled
+Swagger UI                  Live
+OpenAPI Schema              Live
+REST API                    Live
+```
+
+### Live URLs
+
+**Application:** https://shopapi.tanersahindev.com  
+**Swagger UI:** https://shopapi.tanersahindev.com/api/docs/  
+**OpenAPI Schema:** https://shopapi.tanersahindev.com/api/schema/
 
 ---
 
 ## Project Status
 
-Current ShopAPI status:
+```text
+Core Backend Development       Complete
+PostgreSQL Integration         Complete
+Product API                    Complete
+User Authentication            Complete
+JWT Authentication             Complete
+Order API                      Complete
+Ownership Protection           Complete
+Product Permissions            Complete
+Automated Tests                26 Passing
+OpenAPI Schema                 Complete
+Swagger UI                     Complete
+JWT Swagger Authorization      Complete
+Professional README            Complete
+Project Screenshots            Complete
+Production Deployment          Complete
+HTTPS / SSL/TLS                Complete
+HSTS                           Complete
+Production Security Check      0 Issues
+```
 
-    Core Backend Development       Complete
-    PostgreSQL Integration         Complete
-    Product API                    Complete
-    User Authentication            Complete
-    JWT Authentication             Complete
-    Order API                      Complete
-    Ownership Protection           Complete
-    Product Permissions            Complete
-    Automated Tests                26 Passing
-    OpenAPI Schema                 Complete
-    Swagger UI                     Complete
-    JWT Swagger Authorization      Complete
-    Professional README            Complete
-    Project Screenshots            Complete
-    Production Deployment          Next Stage
+**Status: Production deployed and live.**
 
 ---
 
@@ -710,6 +850,7 @@ The project demonstrates:
 - Django ORM
 - Model relationships
 - Serialization
+- Validation
 - JSON request and response handling
 - ViewSets
 - Routers
@@ -726,23 +867,37 @@ The project demonstrates:
 - OpenAPI schema generation
 - Interactive Swagger documentation
 - Environment-based configuration
+- Production security configuration
 - Git and GitHub workflow
-- Production-oriented backend architecture
+- VPS deployment
+- Ubuntu Linux
+- Gunicorn
+- Nginx
+- systemd
+- Domain and DNS configuration
+- SSL/TLS
+- HTTPS
+- HSTS
+- Production verification
 
-The goal of ShopAPI is to demonstrate the complete path from relational database design to a secure, documented, tested, and production-oriented REST API.
+The goal of ShopAPI is to demonstrate the complete path from relational database design to a secure, documented, tested, and production-deployed REST API.
 
 ---
 
 ## Live Application
 
-Production deployment is the next project stage.
+ShopAPI is deployed and publicly accessible.
 
-After deployment, this section will contain the real production URLs:
+**Live Application**  
+https://shopapi.tanersahindev.com
 
-    Live Application:
-    Live API:
-    Swagger Documentation:
-    OpenAPI Schema:
+**Swagger Documentation**  
+https://shopapi.tanersahindev.com/api/docs/
+
+**OpenAPI Schema**  
+https://shopapi.tanersahindev.com/api/schema/
+
+The Swagger interface can be used to explore the API endpoints, inspect request and response schemas, and test supported API operations.
 
 ---
 
@@ -750,4 +905,8 @@ After deployment, this section will contain the real production URLs:
 
 ShopAPI is a backend-focused e-commerce REST API portfolio project built with Django REST Framework and PostgreSQL.
 
-It was developed to demonstrate how a REST API is designed from database models through serializers, ViewSets, routers, JWT authentication, permissions, ownership rules, automated testing, OpenAPI documentation, and production deployment.
+It demonstrates the complete backend development lifecycle:
+
+**Database Design → Django ORM → Models → Serializers → ViewSets → Routers → REST Endpoints → JSON → CRUD → JWT Authentication → Authorization → Permissions → Ownership → Automated Testing → OpenAPI → Swagger → Production Security → VPS → Gunicorn → Nginx → Domain/DNS → SSL/TLS → HTTPS → HSTS**
+
+The project is fully tested, documented, production deployed, and publicly accessible.
